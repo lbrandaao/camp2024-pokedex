@@ -2,6 +2,7 @@ package com.example.pokedex
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,6 +24,7 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -31,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,12 +41,66 @@ import com.example.pokedex.ui.theme.MainPink
 import com.example.pokedex.ui.theme.Poppins
 
 @Composable
+fun PokemonCard(name: String, type: String) {
+    Column (
+        modifier = Modifier
+            .size(width = 95.dp, height = 100.dp)
+            .border(
+                width = 1.dp,
+                color = PokeTypeColor.fromTypeString(type)!!,
+                shape = RoundedCornerShape(10.dp)
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
+
+        Text(text = "#001",
+            textAlign = TextAlign.End,
+            modifier = Modifier
+                .fillMaxWidth(0.8f)
+                .padding(top = 3.dp),
+            fontFamily = Poppins,
+            fontSize = 8.sp,
+            color = PokeTypeColor.fromTypeString(type)!!)
+
+        Image(painter = painterResource(id = PokeImage.fromName(name)),
+            contentDescription = "Imagem de Pokemon",
+            modifier = Modifier.size(65.dp)
+        )
+        Row (
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    color = PokeTypeColor.fromTypeString(type)!!,
+                    shape = RoundedCornerShape(
+                        bottomStart = 10.dp,
+                        bottomEnd = 10.dp
+                    )
+                )
+                .fillMaxSize(),
+            verticalAlignment = Alignment.CenterVertically
+
+        ){
+            Text(text = name,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth(),
+                fontFamily = Poppins,
+                fontSize = 10.sp,
+                color = Color.White)
+        }
+    }
+}
+
+
+@Composable
 fun PokeListScreen() {
     var pokemonSearchText by remember { mutableStateOf("Teste") }
 
+    var pokemonsList = remember { mutableStateListOf("Bulbasaur", "Pikachu", "Charmander", "Squirtle") }
+
     Column (modifier = Modifier
         .fillMaxSize()
-        .background(color = Color.White)){
+        .background(color = Color.White))
+    {
         Row (modifier = Modifier
             .fillMaxWidth()
             .height(17.dp)
@@ -129,6 +186,73 @@ fun PokeListScreen() {
                 modifier = Modifier.size(24.dp)
                 )
 
+        }
+
+        Column (
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(start = 40.dp, end = 40.dp, top = 41.dp, bottom = 49.dp),
+            verticalArrangement = Arrangement.Top
+        ) {
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 5.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                PokemonCard(name = "Bulbasaur", type = "grass")
+                PokemonCard(name = "Pikachu", type = "electric")
+                PokemonCard(name = "Charmander", type = "fire")
+            }
+
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 5.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                PokemonCard(name = "Bulbasaur", type = "grass")
+                PokemonCard(name = "Pikachu", type = "electric")
+                PokemonCard(name = "Charmander", type = "fire")
+            }
+
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 5.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                PokemonCard(name = "Bulbasaur", type = "grass")
+                PokemonCard(name = "Pikachu", type = "electric")
+                PokemonCard(name = "Charmander", type = "fire")
+            }
+
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 5.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                PokemonCard(name = "Bulbasaur", type = "grass")
+                PokemonCard(name = "Pikachu", type = "electric")
+                PokemonCard(name = "Charmander", type = "fire")
+            }
+
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 5.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                PokemonCard(name = "Bulbasaur", type = "grass")
+                PokemonCard(name = "Pikachu", type = "electric")
+                PokemonCard(name = "Charmander", type = "fire")
+            }
         }
     }
 }
