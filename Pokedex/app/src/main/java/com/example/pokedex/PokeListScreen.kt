@@ -24,7 +24,6 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -37,88 +36,44 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.pokedex.data.remote.responses.Pokemon
 import com.example.pokedex.ui.theme.MainPink
 import com.example.pokedex.ui.theme.Poppins
-
-@Composable
-fun PokemonCard(name: String, type: String) {
-    Column (
-        modifier = Modifier
-            .size(width = 95.dp, height = 100.dp)
-            .border(
-                width = 1.dp,
-                color = PokeTypeColor.fromTypeString(type)!!,
-                shape = RoundedCornerShape(10.dp)
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ){
-
-        Text(text = "#001",
-            textAlign = TextAlign.End,
-            modifier = Modifier
-                .fillMaxWidth(0.8f)
-                .padding(top = 3.dp),
-            fontFamily = Poppins,
-            fontSize = 8.sp,
-            color = PokeTypeColor.fromTypeString(type)!!)
-
-        Image(painter = painterResource(id = PokeImage.fromName(name)),
-            contentDescription = "Imagem de Pokemon",
-            modifier = Modifier.size(65.dp)
-        )
-        Row (
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    color = PokeTypeColor.fromTypeString(type)!!,
-                    shape = RoundedCornerShape(
-                        bottomStart = 10.dp,
-                        bottomEnd = 10.dp
-                    )
-                )
-                .fillMaxSize(),
-            verticalAlignment = Alignment.CenterVertically
-
-        ){
-            Text(text = name,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth(),
-                fontFamily = Poppins,
-                fontSize = 10.sp,
-                color = Color.White)
-        }
-    }
-}
+import com.example.pokedex.viewModel.PokeListViewModel
 
 
 @Composable
 fun PokeListScreen() {
-    var pokemonSearchText by remember { mutableStateOf("Teste") }
+    val pokeListViewModel = viewModel<PokeListViewModel>()
+    val pokemonsList = pokeListViewModel.state.pokemonsList
+    var pokemonSearchText by remember { mutableStateOf("") }
 
-    var pokemonsList = remember { mutableStateListOf("Bulbasaur", "Pikachu", "Charmander", "Squirtle") }
-
-    Column (modifier = Modifier
-        .fillMaxSize()
-        .background(color = Color.White))
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color.White)
+    )
     {
-        Row (modifier = Modifier
-            .fillMaxWidth()
-            .height(17.dp)
-            .background(color = MainPink)
-        ){}
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(17.dp)
+                .background(color = MainPink)
+        ) {}
 
-        Row (
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 50.dp, start = 40.dp, end = 32.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
-            
-        ){
-            Row (
+
+        ) {
+            Row(
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically
-            ){
+            ) {
                 Spacer(modifier = Modifier.padding(start = 8.dp))
 
                 Image(
@@ -127,7 +82,8 @@ fun PokeListScreen() {
                     modifier = Modifier.size(width = 27.dp, height = 32.dp)
                 )
 
-                Text(text = "ioasys pokédex", fontSize = 24.sp,
+                Text(
+                    text = "ioasys pokédex", fontSize = 24.sp,
                     modifier = Modifier.padding(start = 13.dp),
                     color = MainPink,
                     fontFamily = Poppins,
@@ -135,7 +91,8 @@ fun PokeListScreen() {
                 )
             }
 
-            Switch(checked = false,
+            Switch(
+                checked = false,
                 onCheckedChange = {},
                 modifier = Modifier
                     .size(width = 39.dp, height = 27.dp),
@@ -147,12 +104,13 @@ fun PokeListScreen() {
             )
         }
 
-        Row (modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 51.dp, start = 40.dp, end = 40.dp),
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 51.dp, start = 40.dp, end = 40.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
-        ){
+        ) {
             OutlinedTextField(
                 value = pokemonSearchText,
                 placeholder = {
@@ -160,16 +118,20 @@ fun PokeListScreen() {
                 },
                 onValueChange = { pokemonSearchText = it },
                 trailingIcon = {
-                    Icon(imageVector = Icons.Default.Search,
+                    Icon(
+                        imageVector = Icons.Default.Search,
                         contentDescription = "Ícone de busca",
-                        tint = MainPink)
+                        tint = MainPink
+                    )
                 },
                 label = {
-                    Text(text = "Buscar",
+                    Text(
+                        text = "Buscar",
                         fontFamily = Poppins,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        color = MainPink)
+                        color = MainPink
+                    )
                 },
                 shape = RoundedCornerShape(10.dp),
                 colors = OutlinedTextFieldDefaults.colors(
@@ -180,78 +142,96 @@ fun PokeListScreen() {
                 )
             )
 
-            Icon(imageVector = Icons.Default.Favorite,
+            Icon(
+                imageVector = Icons.Default.Favorite,
                 contentDescription = "Ícone clicável",
                 tint = MainPink,
                 modifier = Modifier.size(24.dp)
-                )
+            )
 
         }
 
-        Column (
+        PokemonListDisplayArea(pokemonsList = pokemonsList)
+    }
+}
+
+@Composable
+fun PokemonCard(pokemon: Pokemon) {
+    Column(
+        modifier = Modifier
+            .size(width = 95.dp, height = 100.dp)
+            .border(
+                width = 1.dp,
+                color = PokeTypeColor.fromTypeString(pokemon.types[0].type.name)!!,
+                shape = RoundedCornerShape(10.dp)
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Text(
+            text = "#"+String.format("%03d", pokemon.id),
+            textAlign = TextAlign.End,
+            modifier = Modifier
+                .fillMaxWidth(0.8f)
+                .padding(top = 3.dp),
+            fontFamily = Poppins,
+            fontSize = 8.sp,
+            color = PokeTypeColor.fromTypeString(pokemon.types[0].type.name)!!
+        )
+
+        Image(
+            painter = painterResource(id = PokeImage.fromName(pokemon.name)),
+            contentDescription = "Imagem de Pokemon",
+            modifier = Modifier.size(65.dp)
+        )
+        Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(start = 40.dp, end = 40.dp, top = 41.dp, bottom = 49.dp),
-            verticalArrangement = Arrangement.Top
+                .background(
+                    color = PokeTypeColor.fromTypeString(pokemon.types[0].type.name)!!,
+                    shape = RoundedCornerShape(
+                        bottomStart = 10.dp,
+                        bottomEnd = 10.dp
+                    )
+                )
+                .fillMaxSize(),
+            verticalAlignment = Alignment.CenterVertically
+
         ) {
-            Row (
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 5.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                PokemonCard(name = "Bulbasaur", type = "grass")
-                PokemonCard(name = "Pikachu", type = "electric")
-                PokemonCard(name = "Charmander", type = "fire")
-            }
+            Text(
+                text = pokemon.name,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth(),
+                fontFamily = Poppins,
+                fontSize = 10.sp,
+                color = Color.White
+            )
+        }
+    }
+}
 
-            Row (
+@Composable
+fun PokemonListDisplayArea(pokemonsList: List<Pokemon>) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 40.dp, end = 40.dp, top = 41.dp, bottom = 49.dp),
+        verticalArrangement = Arrangement.Top
+    ) {
+        for (i in pokemonsList.indices step 3) {
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 5.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
-            ){
-                PokemonCard(name = "Bulbasaur", type = "grass")
-                PokemonCard(name = "Pikachu", type = "electric")
-                PokemonCard(name = "Charmander", type = "fire")
-            }
+            ) {
 
-            Row (
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 5.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                PokemonCard(name = "Bulbasaur", type = "grass")
-                PokemonCard(name = "Pikachu", type = "electric")
-                PokemonCard(name = "Charmander", type = "fire")
-            }
+                PokemonCard(pokemonsList[i])
 
-            Row (
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 5.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                PokemonCard(name = "Bulbasaur", type = "grass")
-                PokemonCard(name = "Pikachu", type = "electric")
-                PokemonCard(name = "Charmander", type = "fire")
-            }
+                PokemonCard(pokemonsList[i+1])
 
-            Row (
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 5.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                PokemonCard(name = "Bulbasaur", type = "grass")
-                PokemonCard(name = "Pikachu", type = "electric")
-                PokemonCard(name = "Charmander", type = "fire")
+                PokemonCard(pokemonsList[i+2])
             }
         }
     }
