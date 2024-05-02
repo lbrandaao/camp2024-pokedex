@@ -1,4 +1,6 @@
-package com.example.pokedex
+package com.example.pokedex.auxclasses
+
+import com.example.pokedex.R
 
 enum class PokeImage(val id: Int) {
     ARON(R.drawable.aron),

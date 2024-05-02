@@ -26,6 +26,6 @@ class PokeListViewModel : ViewModel() {
 
 data class PokeListScreenState(
     val pokemonsList: List<Pokemon> = listOf(),
-    val limit: Int = 15,
+    val limit: Int = 1302,
     val offset: Int = 0
 )

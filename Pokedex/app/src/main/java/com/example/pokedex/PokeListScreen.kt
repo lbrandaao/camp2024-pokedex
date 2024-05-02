@@ -2,7 +2,6 @@ package com.example.pokedex
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,12 +31,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.pokedex.data.remote.responses.Pokemon
+import com.example.pokedex.components.PokemonListDisplayArea
 import com.example.pokedex.ui.theme.MainPink
 import com.example.pokedex.ui.theme.Poppins
 import com.example.pokedex.viewModel.PokeListViewModel
@@ -152,88 +150,6 @@ fun PokeListScreen() {
         }
 
         PokemonListDisplayArea(pokemonsList = pokemonsList)
-    }
-}
-
-@Composable
-fun PokemonCard(pokemon: Pokemon) {
-    Column(
-        modifier = Modifier
-            .size(width = 95.dp, height = 100.dp)
-            .border(
-                width = 1.dp,
-                color = PokeTypeColor.fromTypeString(pokemon.types[0].type.name)!!,
-                shape = RoundedCornerShape(10.dp)
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        Text(
-            text = "#"+String.format("%03d", pokemon.id),
-            textAlign = TextAlign.End,
-            modifier = Modifier
-                .fillMaxWidth(0.8f)
-                .padding(top = 3.dp),
-            fontFamily = Poppins,
-            fontSize = 8.sp,
-            color = PokeTypeColor.fromTypeString(pokemon.types[0].type.name)!!
-        )
-
-        Image(
-            painter = painterResource(id = PokeImage.fromName(pokemon.name)),
-            contentDescription = "Imagem de Pokemon",
-            modifier = Modifier.size(65.dp)
-        )
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    color = PokeTypeColor.fromTypeString(pokemon.types[0].type.name)!!,
-                    shape = RoundedCornerShape(
-                        bottomStart = 10.dp,
-                        bottomEnd = 10.dp
-                    )
-                )
-                .fillMaxSize(),
-            verticalAlignment = Alignment.CenterVertically
-
-        ) {
-            Text(
-                text = pokemon.name,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth(),
-                fontFamily = Poppins,
-                fontSize = 10.sp,
-                color = Color.White
-            )
-        }
-    }
-}
-
-@Composable
-fun PokemonListDisplayArea(pokemonsList: List<Pokemon>) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 40.dp, end = 40.dp, top = 41.dp, bottom = 49.dp),
-        verticalArrangement = Arrangement.Top
-    ) {
-        for (i in pokemonsList.indices step 3) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 5.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-
-                PokemonCard(pokemonsList[i])
-
-                PokemonCard(pokemonsList[i+1])
-
-                PokemonCard(pokemonsList[i+2])
-            }
-        }
     }
 }
 

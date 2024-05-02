@@ -1,4 +1,4 @@
-package com.example.pokedex
+package com.example.pokedex.auxclasses
 
 import androidx.compose.ui.graphics.Color
 enum class PokeTypeColor(val color: Color) {
