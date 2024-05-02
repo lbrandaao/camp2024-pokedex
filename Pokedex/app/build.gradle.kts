@@ -50,6 +50,7 @@ android {
 }
 
 dependencies {
+    val paging_version = "3.2.1"
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -65,6 +66,9 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.gson)
     implementation("androidx.core:core-splashscreen:1.0.0")
+    implementation("io.coil-kt:coil-compose:2.6.0")
+    implementation("androidx.paging:paging-runtime:$paging_version")
+    implementation("androidx.paging:paging-compose:3.3.0-rc01")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

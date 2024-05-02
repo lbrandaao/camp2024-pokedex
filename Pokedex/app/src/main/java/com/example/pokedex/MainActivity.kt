@@ -3,6 +3,7 @@ package com.example.pokedex
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -15,6 +16,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.pokedex.ui.theme.PokedexTheme
+import com.example.pokedex.viewModel.PokeListViewModel
 
 /*
 * TODO:
@@ -22,6 +24,8 @@ import com.example.pokedex.ui.theme.PokedexTheme
 * */
 
 class MainActivity : ComponentActivity() {
+
+    private val pokemonListViewModel by viewModels<PokeListViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
@@ -30,7 +34,7 @@ class MainActivity : ComponentActivity() {
             PokedexTheme {
                 NavHost(navController = navController, startDestination = "pokelist") {
                     composable("pokelist") {
-                        PokeListScreen()
+                        PokeListScreen(pokemonListViewModel)
                     }
                 }
             }

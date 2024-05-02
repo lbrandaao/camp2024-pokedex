@@ -1,6 +1,5 @@
 package com.example.pokedex.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -15,11 +14,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.pokedex.auxclasses.PokeImage
+import coil.compose.AsyncImage
 import com.example.pokedex.auxclasses.PokeTypeColor
 import com.example.pokedex.data.remote.responses.Pokemon
 import com.example.pokedex.ui.theme.Poppins
@@ -29,7 +27,7 @@ import java.util.Locale
 fun PokemonCard(pokemon: Pokemon) {
     Column(
         modifier = Modifier
-            .size(width = 95.dp, height = 100.dp)
+            .size(width = 105.dp, height = 105.dp)
             .border(
                 width = 1.dp,
                 color = PokeTypeColor.fromTypeString(pokemon.types[0].type.name)!!,
@@ -49,11 +47,12 @@ fun PokemonCard(pokemon: Pokemon) {
             color = PokeTypeColor.fromTypeString(pokemon.types[0].type.name)!!
         )
 
-        Image(
-            painter = painterResource(id = PokeImage.fromName(pokemon.name)),
-            contentDescription = "Imagem de Pokemon",
-            modifier = Modifier.size(65.dp)
-        )
+        AsyncImage(
+            model = pokemon.sprites.other.official_artwork.front_default,
+            contentDescription = "Imagem de Pokémon",
+            modifier = Modifier.size(60.dp)
+            )
+
         Row(
             modifier = Modifier
                 .fillMaxSize()

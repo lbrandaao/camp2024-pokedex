@@ -35,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.pokedex.components.PokemonListDisplayArea
 import com.example.pokedex.ui.theme.MainPink
 import com.example.pokedex.ui.theme.Poppins
@@ -42,9 +43,8 @@ import com.example.pokedex.viewModel.PokeListViewModel
 
 
 @Composable
-fun PokeListScreen() {
-    val pokeListViewModel = viewModel<PokeListViewModel>()
-    val pokemonsList = pokeListViewModel.state.pokemonsList
+fun PokeListScreen(pokeListViewModel: PokeListViewModel) {
+    val pokemonsList = pokeListViewModel.pokemonsPager.collectAsLazyPagingItems()
     var pokemonSearchText by remember { mutableStateOf("") }
 
     Column(
@@ -156,5 +156,5 @@ fun PokeListScreen() {
 @Preview(showBackground = true)
 @Composable
 fun PokeListScreenPreview() {
-    PokeListScreen()
+    PokeListScreen(pokeListViewModel = PokeListViewModel())
 }
