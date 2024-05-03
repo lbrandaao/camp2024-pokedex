@@ -20,4 +20,10 @@ class PokemonRepository {
     suspend fun getPokemonInfo(name: String) : Pokemon? {
         return RetrofitInstance.pokeAPIService.getPokemonInfo(name).body()
     }
+
+    suspend fun getPokemonSpecieFlavorText(name: String) : String? {
+        val pokemonSpecieResponse = RetrofitInstance.pokeAPIService.getPokemonSpecie(name).body()
+
+        return pokemonSpecieResponse?.flavor_text_entries?.get(0)?.flavor_text
+    }
 }

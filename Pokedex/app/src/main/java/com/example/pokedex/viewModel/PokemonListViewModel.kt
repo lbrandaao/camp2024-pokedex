@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 class PokeListViewModel : ViewModel() {
     private val pokemonRepository = PokemonRepository()
     var state by mutableStateOf(PokeListScreenState())
+    var _pokemonClicked: Pokemon? = null
 
     val pokemonsPager = Pager(
         PagingConfig(pageSize = 30)
@@ -39,6 +40,10 @@ class PokeListViewModel : ViewModel() {
                 pokemonSearched = null
             )
         }
+    }
+
+    fun pokemonClicked(pokemon: Pokemon) {
+        _pokemonClicked = pokemon
     }
 }
 

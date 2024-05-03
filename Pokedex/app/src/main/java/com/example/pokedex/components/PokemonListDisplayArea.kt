@@ -1,5 +1,6 @@
 package com.example.pokedex.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -20,7 +21,7 @@ import com.example.pokedex.ui.theme.Poppins
 import com.example.pokedex.viewModel.PokeListViewModel
 
 @Composable
-fun PokemonListDisplayArea(pokeListViewModel: PokeListViewModel) {
+fun PokemonListDisplayArea(pokeListViewModel: PokeListViewModel, onCardClick: () -> Unit) {
     val pokemonsList = pokeListViewModel.pokemonsPager.collectAsLazyPagingItems()
 
     LazyRow(
@@ -33,7 +34,10 @@ fun PokemonListDisplayArea(pokeListViewModel: PokeListViewModel) {
         if (pokeListViewModel.state.displaySearch) {
             pokeListViewModel.state.pokemonSearched?.let {
                 item {
-                    PokemonCard(pokemon = it)
+                    PokemonCard(pokemon = it, modifier = Modifier.clickable {
+                        pokeListViewModel.pokemonClicked(it)
+                        onCardClick.invoke()
+                    })
                 }
             } ?: run {
                 item {
@@ -74,15 +78,53 @@ fun PokemonListDisplayArea(pokeListViewModel: PokeListViewModel) {
                         verticalArrangement = Arrangement.SpaceBetween
                     ) {
 
-                        pokemonsList[i]?.let { PokemonCard(it) }
+                        pokemonsList[i]?.let {
+                            PokemonCard(
+                                it, modifier = Modifier
+                                    .clickable {
+                                        pokeListViewModel.pokemonClicked(it)
+                                        onCardClick.invoke()
+                                    }
+                            )
+                        }
 
-                        pokemonsList[i + 1]?.let { PokemonCard(it) }
+                        pokemonsList[i + 1]?.let {
+                            PokemonCard(
+                                it, modifier = Modifier
+                                    .clickable {
+                                        pokeListViewModel.pokemonClicked(it)
+                                        onCardClick.invoke()
+                                    }
+                            )
+                        }
 
-                        pokemonsList[i + 2]?.let { PokemonCard(it) }
+                        pokemonsList[i + 2]?.let {
+                            PokemonCard(
+                                it, modifier = Modifier
+                                    .clickable {
+                                        pokeListViewModel.pokemonClicked(it)
+                                        onCardClick.invoke()
+                                    }
+                            )
+                        }
 
-                        pokemonsList[i + 3]?.let { PokemonCard(it) }
+                        pokemonsList[i + 3]?.let {
+                            PokemonCard(
+                                it, modifier = Modifier
+                                    .clickable {
+                                        pokeListViewModel.pokemonClicked(it)
+                                        onCardClick.invoke()
+                                    }
+                            )
+                        }
 
-                        pokemonsList[i + 4]?.let { PokemonCard(it) }
+                        pokemonsList[i + 4]?.let { PokemonCard(
+                            it, modifier = Modifier
+                                .clickable {
+                                    pokeListViewModel.pokemonClicked(it)
+                                    onCardClick.invoke()
+                                }
+                        )  }
                     }
                 }
             }

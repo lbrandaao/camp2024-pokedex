@@ -43,7 +43,7 @@ import com.example.pokedex.viewModel.PokeListViewModel
 
 
 @Composable
-fun PokeListScreen(pokeListViewModel: PokeListViewModel) {
+fun PokeListScreen(pokeListViewModel: PokeListViewModel, onCardClick: () -> Unit) {
     var pokemonSearchText by remember { mutableStateOf("") }
     var iconTextField by remember { mutableStateOf(Icons.Default.Search) }
 
@@ -160,12 +160,12 @@ fun PokeListScreen(pokeListViewModel: PokeListViewModel) {
 
         }
 
-        PokemonListDisplayArea(pokeListViewModel)
+        PokemonListDisplayArea(pokeListViewModel, onCardClick)
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PokeListScreenPreview() {
-    PokeListScreen(pokeListViewModel = PokeListViewModel())
+    PokeListScreen(pokeListViewModel = PokeListViewModel(), {})
 }

@@ -2,6 +2,7 @@ package com.example.pokedex.data.remote
 
 import com.example.pokedex.data.remote.responses.Pokemon
 import com.example.pokedex.data.remote.responses.PokemonListPage
+import com.example.pokedex.data.remote.responses.PokemonSpecie
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -19,4 +20,9 @@ interface PokeAPIService {
     suspend fun getPokemonInfo(
         @Path("name") name: String
     ) : Response<Pokemon>
+
+    @GET("pokemon-species/{name}")
+    suspend fun getPokemonSpecie(
+        @Path("name") name: String
+    ) : Response<PokemonSpecie>
 }

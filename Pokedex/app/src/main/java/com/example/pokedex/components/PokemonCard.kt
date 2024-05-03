@@ -24,9 +24,9 @@ import com.example.pokedex.ui.theme.Poppins
 import java.util.Locale
 
 @Composable
-fun PokemonCard(pokemon: Pokemon) {
+fun PokemonCard(pokemon: Pokemon, modifier: Modifier) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .size(width = 105.dp, height = 105.dp)
             .border(
                 width = 1.dp,
