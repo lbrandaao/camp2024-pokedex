@@ -1,2 +1,6 @@
-# camp2024-pokedex
-Final challenge for the camp
+# Pokedex - Camp 🎮 🎒
+### Final Challenge
+
+Implementation of a Pokédex for Android.
+
+Made with Jetpack Compose.
