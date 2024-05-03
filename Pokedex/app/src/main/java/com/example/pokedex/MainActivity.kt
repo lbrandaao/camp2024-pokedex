@@ -18,10 +18,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.pokedex.ui.theme.PokedexTheme
 import com.example.pokedex.viewModel.PokeListViewModel
 
-/*
-* TODO:
-*  - Splash Screen: Adicionar texto, melhorar ícone, ver se dá pra fazer requisição
-* */
 
 class MainActivity : ComponentActivity() {
 

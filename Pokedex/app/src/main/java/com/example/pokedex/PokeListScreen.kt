@@ -2,6 +2,7 @@ package com.example.pokedex
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
@@ -34,8 +36,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.pokedex.components.PokemonListDisplayArea
 import com.example.pokedex.ui.theme.MainPink
 import com.example.pokedex.ui.theme.Poppins
@@ -44,8 +44,8 @@ import com.example.pokedex.viewModel.PokeListViewModel
 
 @Composable
 fun PokeListScreen(pokeListViewModel: PokeListViewModel) {
-    val pokemonsList = pokeListViewModel.pokemonsPager.collectAsLazyPagingItems()
     var pokemonSearchText by remember { mutableStateOf("") }
+    var iconTextField by remember { mutableStateOf(Icons.Default.Search) }
 
     Column(
         modifier = Modifier
@@ -117,9 +117,20 @@ fun PokeListScreen(pokeListViewModel: PokeListViewModel) {
                 onValueChange = { pokemonSearchText = it },
                 trailingIcon = {
                     Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = "Ícone de busca",
-                        tint = MainPink
+                        imageVector = iconTextField,
+                        contentDescription = "Ícone clicável",
+                        tint = MainPink,
+                        modifier = Modifier.clickable {
+                           if (pokeListViewModel.state.displaySearch) {
+                               iconTextField = Icons.Default.Search
+                               pokeListViewModel.displayAllPokemons()
+                           } else {
+                               if (pokemonSearchText.isNotBlank()) {
+                                   pokeListViewModel.searchByName(pokemonSearchText)
+                                   iconTextField = Icons.Default.Clear
+                               }
+                           }
+                        }
                     )
                 },
                 label = {
@@ -149,7 +160,7 @@ fun PokeListScreen(pokeListViewModel: PokeListViewModel) {
 
         }
 
-        PokemonListDisplayArea(pokemonsList = pokemonsList)
+        PokemonListDisplayArea(pokeListViewModel)
     }
 }
 

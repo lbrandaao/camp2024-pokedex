@@ -1,6 +1,5 @@
 package com.example.pokedex.viewModel
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -24,31 +23,26 @@ class PokeListViewModel : ViewModel() {
         PokemonsDataSource(pokemonRepository)
     }.flow.cachedIn(viewModelScope)
 
-    /*init {
+    fun searchByName(name: String) {
         viewModelScope.launch {
-            val response = pokemonRepository.getPokemonList(state.limit, state.offset)
-            state = state.copy(
-                pokemonsList = response
-            )
+           val response = pokemonRepository.getPokemonInfo(name.lowercase())
+           state = state.copy(
+               displaySearch = true,
+               pokemonSearched = response
+           )
         }
-    }*/
-
-    fun getPokemonListPaged(limit: Int, offset: Int){
+    }
+    fun displayAllPokemons() {
         viewModelScope.launch {
-            try {
-                val response = pokemonRepository.getPokemonList(limit, offset)
-                state = state.copy(
-                    pokemonsList = response
-                )
-            } catch (e: Exception) {
-                Log.i("PokeListViewModelError", "Erro na requisição de paginação")
-            }
+            state = state.copy(
+                displaySearch = false,
+                pokemonSearched = null
+            )
         }
     }
 }
 
 data class PokeListScreenState(
-    val pokemonsList: List<Pokemon> = listOf(),
-    val limit: Int = 75,
-    val offset: Int = 0
+    val displaySearch: Boolean = false,
+    val pokemonSearched: Pokemon? = null
 )
